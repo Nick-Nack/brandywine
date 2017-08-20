@@ -40,11 +40,11 @@ catch(PDOException $e)
 	<body>	
 		<?php include 'topBar.html';?>
 		<?php include 'adminHeader.html';?>
-		<form action="insert.php" method="post" >
+		<form action="action_page.php" method="post" >
 			<br>
 			<legend>Insert goat name to delete goat:<br><br>
 				Name : <input type="text" placeholder="Jamaica" name = "name"<br>
-		
+					   <input type="submit" name="delete" value="Delete">
 		       </legend><br>
 		</form> 
 		<?php include 'footer.php';?>

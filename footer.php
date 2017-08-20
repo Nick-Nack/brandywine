@@ -43,12 +43,12 @@
 		  	</p>
 		  	
 		  	<div class="place">
-		  	<form action="action_page.php" method="post">
+		  	<form action="action_page.php"  method="post">
 			  Username:
 			  <input type="text" name="username" >
 			  Password:
-			  <input type="text" name="password" >
-			  <input type="submit" value="Submit">
+			  <input type="password" name="password" >
+			  <input type="submit" name="admin" value="Submit">
 			</form>
 			</div>
           </div>

@@ -20,104 +20,80 @@
 		<link rel="shortcut icon" href="/favicon.ico">
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 	</head>
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$db = "goatBase";
 
-try {
-    $conn = new PDO("mysql:host=$servername;dbname=goatBase", $username, $password);
-    // set the PDO error mode to exception
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connected successfully"; 
-    }
-catch(PDOException $e)
-    {
-    echo "Connection failed: " . $e->getMessage();
-    }
-?>
 	<body>	
+		<?php include 'connect.php';?>
 		<?php include 'topBar.html';?>
 		<?php include 'adminHeader.html';?>
-		<form action="insert.php" method="post" >
+		<form action="" method="post" >
 			<br>
-			<legend>Goat information:<br />
-				Name : <input type="text" placeholder="Jamaica" name = "name"
-					<br><br><br>
-				Type : <select name="type">
+			<legend>Insert Goat Name for Autofill:<br /><br>
+				Name : <input type="text" placeholder="Jamaica" name = "fillName">
+					<br><br>
+				<input type="submit" name="fill" value="Get Data">
+			</legend>
+		</form> 
+		<?php
+
+		$search_query = $_POST['fillName'];
+		try{
+			if (!empty($_POST['fill'])) {
+				$sql = $conn->prepare("SELECT * FROM goats WHERE name LIKE '$search_query'") or die(mysql_error());; 
+				$sql->execute(); 
+ 				$arr = $sql->fetch(PDO::FETCH_ASSOC);
+ 			}
+		}
+		catch(PDOException $e){
+			echo "Couldnt find Name or something went wrong";
+		}
+
+        ?>
+		<form action="action_Page.php" method="post" >
+			<br>
+			<legend>Goat information:<br /><br>
+				Name : <input type="text" name = "name" value="<?php echo $arr['name']?>" placeholder="Jamaica"
+					<br><br><br> 
+				Type : <select name="type"> value="<?php echo $arr['type']?> 
  					<option value="seniorDoe">Senior Doe</option>
 			    	<option value="buck">Buck</option>
 			    	<option value="junior">Junior</option>
 					</select>
 					<br><br>
-				Farm : <input type="text" name = "farm"
+				Farm : <input type="text" name = "farm" value="<?php echo $arr['farm']?>"
 				    <br><br><br>
-				Dam  : <input type="text" name = "dam"
+				Dam  : <input type="text" name = "dam" value="<?php echo $arr['dam']?>"
 				    <br><br><br>
-				Sire : <input type="text" name = "sire"
+				Sire : <input type="text" name = "sire" value="<?php echo $arr['sire']?>"
 					<br><br><br>
 		    	
-			Birthday : <input type="date" name="birthday"> <br><br>
+			Birthday : <input type="date" name="birthday" value="<?php echo $arr['birthday']?>" <br><br><br>
 			
-			I'm this tall: 		<select name="height">
-						<option> - Height - </option>
-						<option value="10">10</option>
-						<option value="11">11</option>
-						<option value="12">12</option>
-						<option value="13">13</option>
-						<option value="14">14</option>
-						<option value="15">15</option>
-						<option value="16">16</option>
-						<option value="17">17</option>
-						<option value="18">18</option>
-						<option value="19">19</option>
-						<option value="20">20</option>
-						<option value="21">21</option>
-						<option value="22">22</option>
-						<option value="23">23</option>
-						<option value="24">24</option>
-						<option value="25">25</option>
-						<option value="26">26</option>
-						<option value="27">27</option>
-						<option value="28">28</option>
-						<option value="29">29</option>
-						<option value="30">30</option>
-						<option value="31">31</option>
-					    <option value="24">32</option>
-						<option value="25">33</option>
-						<option value="26">34</option>
-						<option value="27">35</option>
-						<option value="28">36</option>
-						<option value="29">37</option>
-						<option value="30">38</option>
-						<option value="31">39</option>
-				</select>
-			    <br><br>
+			I'm this tall: <input type="decimal" name = "height" min="0" max="30" value="<?php echo $arr['height']?>"
+			    <br><br><br>
 			For Sale :	   
 		      	 <input type="radio" name="forSale" value="1" checked> Yes
 			  	 <input type="radio" name="forSale" value="0"> No<br>
 				 <br>
-		    If so what Price : <input type="number" name = "price" min="0" max="9999">
-			     <br><br>
+		    If so what Price : <input type="number" name = "price" min="0" max="9999"  value="<?php echo $arr['price']?>"
+			     <br><br><br>
 			I'm I alive :	   
 		      	 <input type="radio" name="dead" value="1" checked> Yes
 			  	 <input type="radio" name="dead" value="0"> No<br>
 				 <br>
-		    Milk Capacity (cups) : <input type="number" name = "capacity" min="0" max="9999">
-			     <br><br>
-		    Percent Milk Fat : <input type="number" name = "percentMilkFat" min="0" max="99">
-			     <br><br>
-		    Percent Milk Protien : <input type="number" name = "percentMilkProtien" min="0" max="99">
-			     <br><br>			     
-			NDGA Grands: <input type="number" name = "ndga" min="0" max="5">  Reserves: <input type="number" name = "ndga" min="0" max="5">
+		    Milk Capacity (cups) : <input type="decimal" name = "milkCapacity" min="0" max="9999" value="<?php echo $arr['milkCapacity']?>"
+			     <br><br><br>
+		    Percent Milk Fat : <input type="decimal" name = "percentMilkFat" min="0" max="99" value="<?php echo $arr['percentMilkFat']?>"
+			     <br><br><br>
+		    Percent Milk Protien : <input type="decimal" name = "percentMilkProtien" min="0" max="99" value="<?php echo $arr['percentMilkProtien']?>"
+			     <br><br><br>			     
+			NDGA Grands: <input type="decimal" name = "ndga" min="0" max="5" value="<?php echo $arr['ndgaGrands']?>">  Reserves: <input type="decimal" name = "ndga" min="0" max="10" value="<?php echo $arr['ndgaReserves']?>">
 			     <br><br> 
-		    ADGA wins : <input type="number" name = "adga" min="0" max="5">   Reserves: <input type="number" name = "ndga" min="0" max="5">
+		    ADGA wins : <input type="decimal" name = "adga" min="0" max="5" value="<?php echo $arr['adgaGrands']?>">   Reserves: <input type="decimal" name = "ndga" min="0" max="10" value="<?php echo $arr['adgaReserves']?>">
 			     <br><br>
-		    AGS wins : <input type="number" name = "ags" min="0" max="5">   Reserves: <input type="number" name = "ndga" min="0" max="5">
+		    AGS wins : <input type="decimal" name = "ags" min="0" max="5" value="<?php echo $arr['agsGrands']?>">   Reserves: <input type="decimal" name = "ndga" min="0" max="10" value="<?php echo $arr['agsReserves']?>">
 			     <br><br>			     			       			     				 
 			Make sure everything is filled in! Put 0 or No in irrelevant spots. <br><br>	 
-		         <input type="submit" value="Add Goat">
+		         <input type="submit" name="update" value="Update">
 		         </legend>
 		</form> 
 		<?php include 'footer.php';?>

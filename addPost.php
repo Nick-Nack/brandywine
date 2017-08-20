@@ -20,27 +20,10 @@
 		<link rel="shortcut icon" href="/favicon.ico">
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 	</head>
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$db = "goatBase";
-
-try {
-    $conn = new PDO("mysql:host=$servername;dbname=goatBase", $username, $password);
-    // set the PDO error mode to exception
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connected successfully"; 
-    }
-catch(PDOException $e)
-    {
-    echo "Connection failed: " . $e->getMessage();
-    }
-?>
 	<body>	
 		<?php include 'topBar.html';?>
 		<?php include 'adminHeader.html';?>
-		<form action="insert.php" method="post" >
+		<form action="action_page.php" method="post" >
 			<br>
 			<legend>Post information:<br /><br>
 			Home or Pig :	   
@@ -48,9 +31,7 @@ catch(PDOException $e)
 			  	 <input type="radio" name="home" value="0"> Pig<br>
 				 <br>
 			Insert Post Here:<br>	 
-		   <textarea name="message" rows="10" cols="30">
-
-		   </textarea><br>
+		   <textarea name="message" rows="10" cols="30"></textarea><br>
 		    
 		    Attach Image :	   
 		      	 <input type="radio" name="forSale" value="1" checked> Yes
@@ -60,7 +41,7 @@ catch(PDOException $e)
 		    Image Name : <input type="text" placeholder="image.jpg" name = "image">   
 			     <br><br>			     			       			     				 
 			Make sure everything is filled in! Put 0 or No in irrelevant spots. <br><br>	 
-		         <input type="submit" value="submit">
+		         <input type="submit" name="addPost" value="Add Post">
 		         </legend>
 		</form> 
 		<?php include 'footer.php';?>
